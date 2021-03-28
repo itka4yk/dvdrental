@@ -1,11 +1,14 @@
 package org.dvdrental.api.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.dvdrental.applicationcontract.ICommandBus;
+import org.dvdrental.applicationcontract.IQueryBus;
 import org.dvdrental.applicationcontract.dtos.ActorDto;
 import org.dvdrental.applicationcontract.queries.GetAllActorsQuery;
-import org.dvdrental.applicationcontract.IQueryBus;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -13,8 +16,8 @@ import java.util.List;
 @RequestMapping("/actors")
 @RequiredArgsConstructor
 public class ActorsController {
-    @Autowired
     private final IQueryBus queryBus;
+    private final ICommandBus commandBus;
 
     @GetMapping("/getAll")
     @ResponseBody
