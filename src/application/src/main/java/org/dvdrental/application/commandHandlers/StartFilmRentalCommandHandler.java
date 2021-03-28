@@ -1,14 +1,16 @@
 package org.dvdrental.application.commandHandlers;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.dvdrental.applicationcontract.commands.StartFilmRentalCommand;
 import org.dvdrental.domain.Rental;
 import org.dvdrental.persistence.repositories.FilmsRepository;
 import org.dvdrental.persistence.repositories.RentalRepository;
 import org.dvdrental.persistence.repositories.StaffRepository;
 import org.dvdrental.sharedkernel.cqrs.ICommandHandler;
+import org.dvdrental.sharedkernel.exception.EntityNotFoundException;
+import org.dvdrental.sharedkernel.validation.Check;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -21,22 +23,23 @@ public class StartFilmRentalCommandHandler implements ICommandHandler<StartFilmR
     private final StaffRepository staffRepository;
     private final RentalRepository rentalRepository;
 
+    @SneakyThrows
     @Override
     public Void handle(StartFilmRentalCommand command) {
-        // TODO: add custom validator service
-        Assert.notNull(command.getFilmId(), "FilmId must be provided");
-        Assert.notNull(command.getStaffId(), "StaffId must be provided");
+        Check.notNull(command.getFilmId(), "FilmId must be provided");
+        Check.notNull(command.getStaffId(), "StaffId must be provided");
 
         // TODO: Get user from context
         // TODO: add user auth
         // TODO: Get store from user
 
         var film = filmsRepository.findById(command.getFilmId());
-        Assert.isTrue(film.isPresent(), "Can't find film with id " + command.getFilmId());
+        if(film.isEmpty()) throw new EntityNotFoundException("Can't find film with id " + command.getFilmId());
 
         var staff = staffRepository.findById(command.getStaffId());
-        Assert.isTrue(staff.isPresent(), "Can't find staff with id " + command.getStaffId());
-        Assert.isTrue(staff.get().getActive(), "Staff must be active");
+        if(staff.isEmpty()) throw new EntityNotFoundException("Can't find staff with id " + command.getFilmId());
+
+        // TODO: check if staff is active
 
         // TODO: check inventory
         var rental = rentalRepository.create(Rental.class);

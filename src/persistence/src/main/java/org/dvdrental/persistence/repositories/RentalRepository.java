@@ -4,5 +4,5 @@ import org.dvdrental.domain.Rental;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RentalRepository extends BaseRepository<Rental, Long> {
+public interface RentalRepository extends IBaseRepository<Rental, Long> {
 }
