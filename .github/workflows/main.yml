@@ -15,7 +15,7 @@ jobs:
         with:
           java-version: 11
       - name: Cache Maven packages
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -41,7 +41,7 @@ jobs:
         run: echo "::set-output name=dir::$(yarn cache dir)"
         working-directory: ./src/frontend
       - name: Cache node_modules 📦
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.4
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
