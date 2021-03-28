@@ -21,7 +21,7 @@ public class Rental {
     LocalDateTime returnDate;
     Long staffId;
 
-    public Rental(Long customerId, LocalDateTime rentalDate, Long inventoryId, Long staffId) {
+    public void start(Long customerId, LocalDateTime rentalDate, Long inventoryId, Long staffId) {
         Assert.notNull(customerId, "Customer Id should not be empty");
         Assert.notNull(inventoryId, "Inventory Id should not be empty");
         Assert.notNull(staffId, "Staff Id should not be empty");
@@ -32,7 +32,7 @@ public class Rental {
         this.staffId = staffId;
     }
 
-    public void finishRental(LocalDateTime returnDate) {
+    public void finish(LocalDateTime returnDate) {
         Assert.isTrue(returnDate.isAfter(this.rentalDate), "Return date should be after rental date");
         this.returnDate = returnDate;
     }

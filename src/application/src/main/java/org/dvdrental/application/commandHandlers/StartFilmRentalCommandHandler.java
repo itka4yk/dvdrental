@@ -39,8 +39,8 @@ public class StartFilmRentalCommandHandler implements ICommandHandler<StartFilmR
         Assert.isTrue(staff.get().getActive(), "Staff must be active");
 
         // TODO: check inventory
-
-        var rental = new Rental(
+        var rental = rentalRepository.create(Rental.class);
+        rental.start(
                 (long)1, // FIXME: this must be customer's id
                 LocalDateTime.now(),
                 (long)1, // FIXME: this must be inventory id
@@ -48,7 +48,6 @@ public class StartFilmRentalCommandHandler implements ICommandHandler<StartFilmR
         );
 
         this.rentalRepository.save(rental);
-        // FIXME
         return null;
     }
 }
